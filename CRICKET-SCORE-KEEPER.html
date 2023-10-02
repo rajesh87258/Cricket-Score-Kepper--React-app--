@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cricket Score App</title>
-    <link rel="stylesheet" type="text/css" href="./aStyle.css">
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -19,6 +18,8 @@
       let score = 0 ;
       let wicket = 0;
       let ballWiseRes = [];
+      let hit = 0;
+      let inputRef = React.createRef();
 
     //   function addTwo(){
     //     if(wicket < 10){
@@ -32,24 +33,27 @@
     // }
 
       function addScore (num){
-        if(wicket < 10){
-          ballWiseRes.push(num);
-        score += num;
+        // if(wicket < 10){
+        //   ballWiseRes.push(num);
+        // score += num;
+        hit = num;
         rootElement.render(<App />);
-        console.log(ballWiseRes);
+        console.log(hit);
+        
       }
-    }
+    
 
       function addWicket (){
-        if(wicket < 10){
-          ballWiseRes.push("W");
-          wicket += 1;
+        // if(wicket < 10){
+          // ballWiseRes.push("W");
+          // wicket += 1;
+          hit = "w"
           rootElement.render(<App />);
-          console.log(ballWiseRes);
+         
 
         }
 
-      }
+      
 
       const ScoreButtons = () =>(
 
@@ -79,6 +83,32 @@
           ))}
         </div>
       )
+      function handleSubmit(event){
+        event.preventDefault();
+        if(hit == "w"){
+          wicket += 1;
+        }else{
+          score += hit;
+        }
+        ballWiseRes.unshift(hit);
+        console.log(inputRef.current.value);
+        rootElement.render(<App />);
+
+        
+
+      }
+
+      const Form = ()=>(
+       
+        <form onSubmit = {handleSubmit}>
+        <input value={hit}/>
+        <input ref = {inputRef} placeholder="Add a Comment" />
+        <button>Submit</button>
+        </form>
+  
+      )
+
+
 
         /*RENDER ALL FUNCTIONS HERE */
 
@@ -88,7 +118,20 @@
        <h1>CounT Score </h1>
        <h2>SCORE {score}/{wicket}</h2>
        <ScoreButtons />
-       <Result />
+       <br />
+       <hr />
+       <br/>
+       <Form />
+       <hr />
+       <div>
+       {ballWiseRes.map((res,index)=>(
+      
+          <p key={index}>{res}</p>
+          
+       ))}
+       </div>
+
+       
       
        </>
 
